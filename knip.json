@@ -1,0 +1,12 @@
+{
+  "$schema": "https://unpkg.com/knip@5/schema.json",
+  "ignoreWorkspaces": ["apps/mobile"],
+  "workspaces": {
+    ".": {
+      "project": ["dev/*.mjs"]
+    },
+    "packages/types": {
+      "project": "src/**/*.ts"
+    }
+  }
+}

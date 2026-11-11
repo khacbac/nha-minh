@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024">
+  <!--
+    Nhà Mình mark: a roof that holds a heart, with one diary line under it.
+    Colours: tokens.js moss 500 (#3F6B57) and paper 50 (#FAF8F4). `scripts/build-icons.mjs`
+    swaps them for the splash (moss mark, no background) and hides the background for the
+    Android adaptive foreground.
+  -->
+  <rect id="bg" width="1024" height="1024" fill="#3F6B57" />
+  <g id="mark">
+    <path
+      d="M512 250 L246 470 Q232 482 246 494 L286 494 L286 742 Q286 792 336 792 L688 792 Q738 792 738 742 L738 494 L778 494 Q792 482 778 470 Z"
+      fill="#FAF8F4"
+      stroke="#FAF8F4"
+      stroke-width="36"
+      stroke-linejoin="round"
+    />
+    <path
+      d="M512 660 C 446 616 392 572 392 516 C 392 478 420 450 456 450 C 482 450 502 464 512 486 C 522 464 542 450 568 450 C 604 450 632 478 632 516 C 632 572 578 616 512 660 Z"
+      fill="#3F6B57"
+    />
+    <path d="M430 724 L594 724" stroke="#3F6B57" stroke-width="30" stroke-linecap="round" />
+  </g>
+</svg>

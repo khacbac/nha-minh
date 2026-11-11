@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Nhà Mình Design</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="kit/viewer.css" />
+    <link rel="stylesheet" href="kit/ui.css" />
+  </head>
+  <body>
+    <nav id="sidebar" aria-label="Pages">
+      <div class="brand">Nhà Mình <small>Design · opens from disk, no build</small></div>
+      <div id="pages"></div>
+      <div id="layers"></div>
+    </nav>
+
+    <header id="toolbar">
+      <button id="menu" aria-label="Pages">☰</button>
+      <span id="title"></span>
+      <span id="source"></span>
+      <div class="tools" id="zoom-tools">
+        <button id="zoom-out" aria-label="Zoom out">−</button>
+        <span id="zoom-value"></span>
+        <button id="zoom-in" aria-label="Zoom in">+</button>
+        <button id="zoom-fit">Fit</button>
+      </div>
+      <button id="play">▶ Play flow</button>
+    </header>
+
+    <main id="canvas">
+      <p id="warning" hidden>
+        Couldn't load apps/mobile/src/lib/theme/tokens.js, so colours are missing. Open this file
+        from inside the repo (dev/design/index.html).
+      </p>
+    </main>
+
+    <section id="focus" hidden aria-label="Focused frame">
+      <div class="focus-head">
+        <span id="focus-title"></span>
+        <button id="focus-play">▶ Play flow</button>
+        <button id="focus-close" aria-label="Close">✕ Esc</button>
+      </div>
+      <div class="focus-body">
+        <button class="arrow" id="prev" aria-label="Previous frame">‹</button>
+        <div id="focus-stage"></div>
+        <button class="arrow" id="next" aria-label="Next frame">›</button>
+      </div>
+      <p id="focus-note"></p>
+      <nav id="focus-states" aria-label="Frames"></nav>
+    </section>
+
+    <!-- tokens.js, icons.js and category-data.js are CommonJS; give each a fresh `module` so a plain script tag can load it from disk. -->
+    <script>
+      window.module = { exports: {} };
+    </script>
+    <script src="../../apps/mobile/src/lib/theme/tokens.js"></script>
+    <script src="kit/theme.js"></script>
+    <script>
+      window.module = { exports: {} };
+    </script>
+    <script src="../../apps/mobile/src/lib/theme/icons.js"></script>
+    <script>
+      window.SoNhaIcons = window.module.exports.icons;
+      window.module = { exports: {} };
+    </script>
+    <script src="../../apps/mobile/src/features/categories/category-data.js"></script>
+    <script>
+      window.SoNhaCategories = window.module.exports.categories;
+    </script>
+    <script src="kit/ui.js"></script>
+    <script src="kit/viewer.js"></script>
+
+    <!-- Pages, in sidebar order. New page: copy pages/_template.js, add a line here. -->
+    <script src="pages/flow-main.js"></script>
+    <script src="pages/journal.js"></script>
+    <script src="pages/entry-detail.js"></script>
+    <script src="pages/entry-form.js"></script>
+    <script src="pages/stats.js"></script>
+    <script src="pages/components.js"></script>
+    <script src="pages/foundations.js"></script>
+    <script src="pages/brand.js"></script>
+  </body>
+</html>

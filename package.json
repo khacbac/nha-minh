@@ -1,0 +1,45 @@
+{
+  "name": "so-nha",
+  "private": true,
+  "packageManager": "pnpm@10.13.1",
+  "engines": {
+    "node": ">=22.13.0"
+  },
+  "scripts": {
+    "build": "turbo build",
+    "lint": "biome lint .",
+    "format": "biome check --write .",
+    "typecheck": "turbo typecheck",
+    "test": "turbo test",
+    "knip": "knip",
+    "design:serve": "node dev/serve.mjs",
+    "mobile": "pnpm --filter @sonha/mobile start",
+    "mobile:fresh": "pnpm --filter @sonha/mobile start:fresh",
+    "mobile:clear-cache": "pnpm --filter @sonha/mobile clear-cache",
+    "mobile:android": "pnpm --filter @sonha/mobile android",
+    "mobile:android:device": "pnpm --filter @sonha/mobile android:device",
+    "mobile:android:release": "pnpm --filter @sonha/mobile android:release",
+    "mobile:ios": "pnpm --filter @sonha/mobile ios",
+    "mobile:prebuild": "pnpm --filter @sonha/mobile prebuild",
+    "mobile:icons": "node apps/mobile/scripts/build-icons.mjs"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^1.9.4",
+    "knip": "^5.64.0",
+    "turbo": "^2.5.3",
+    "typescript": "~5.7.3"
+  },
+  "pnpm": {
+    "overrides": {
+      "react": "19.2.0",
+      "react-dom": "19.2.0"
+    },
+    "peerDependencyRules": {
+      "allowedVersions": {
+        "react": "19",
+        "react-dom": "19"
+      }
+    },
+    "onlyBuiltDependencies": ["@biomejs/biome", "esbuild"]
+  }
+}
