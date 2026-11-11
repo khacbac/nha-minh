@@ -13,7 +13,7 @@ Status: **M0** scaffold, **M1** (journal, detail, new/edit form, delete), **M2**
 This repo mirrors the sister apps so switching between them needs no context change (local paths in `CLAUDE.local.md`). When unsure how to do something, look at how they do it and match that. Do not introduce a library they do not use without a reason recorded in the spec or the plan.
 
 - **Mobile:** React Native 0.83 + Expo SDK 55, Expo Router, **dev build only**, NativeWind 4, Jotai, form-atoms + Zod, i18next, MMKV, Reanimated, react-native-svg (icons), `@react-native-community/datetimepicker`, expo-haptics, expo-font + `@expo-google-fonts/be-vietnam-pro`, `react-native-keyboard-controller` (the form stays above the keyboard on Android edge-to-edge, same as Request and Offmute)
-- **Backend:** Fastify 5, Zod, Vitest, `@fastify/rate-limit`, Supabase (Auth email + password, Postgres via `@supabase/supabase-js` with the secret key; local stack in `supabase/`); ESM (`"type": "module"`, `.js` import specifiers); deployed on Railway from `apps/server/Dockerfile`
+- **Backend:** Fastify 5, Zod, Vitest, `@fastify/rate-limit`, Supabase (Auth email + password, Postgres via `@supabase/supabase-js` with the secret key; migrations in `supabase/`; **one database, production**: local dev runs the server locally against it); ESM (`"type": "module"`, `.js` import specifiers); deployed on Railway from `apps/server/Dockerfile`
 - **Monorepo:** pnpm 10 + Turbo, Node ≥ 22.13; Biome for lint + format
 - **Shared:** `packages/types` (`@sonha/types`): Zod schemas (`Entry`, `CategoryId`) and the API contract (`entryListResponseSchema`, `entryResponseSchema`, `API_ERROR_CODES`)
 
@@ -25,9 +25,8 @@ pnpm mobile              # Metro only, for a dev build already on the device
 pnpm mobile:fresh        # Clear Metro/NativeWind caches, then Metro (a new Tailwind class not applying)
 pnpm mobile:android:release  # Release build (JS bundled in, no Metro) installed on the device
 pnpm mobile:build:ios:submit  # EAS cloud build (internal-test) → TestFlight; first run interactive, see dev/guides/release-ios.md
-pnpm db:start            # Local Supabase in Docker (API :56321, Studio :56323); seed account nha@example.com / nhaminh123
-pnpm db:reset            # Re-run supabase/migrations + seed.sql from scratch; pnpm db:new <name> for a new migration
-pnpm server:dev          # apps/server on :3100 (needs apps/server/.env, see .env.example)
+pnpm server:dev          # apps/server on :3100 against production Supabase (apps/server/.env, see .env.example)
+pnpm db:new <name>       # New migration in supabase/migrations; pnpm db:push runs it on production
 pnpm mobile:icons        # Render assets/brand/logo.svg into the app icon + splash PNGs (headless Chrome)
 pnpm lint                # Biome lint
 pnpm format              # Biome format + organize imports
@@ -51,7 +50,7 @@ apps/mobile/src/
   components/             # shared UI (text, button, chip, fab, icon, text-field, confirm-dialog, nav-header)
   lib/                    # api/ (http-client, api-client), supabase.ts (session in MMKV), i18n/, theme/{tokens.js,icons.js} (read by dev/design), feedback.ts
 apps/server/src/          # app.ts, config.ts, plugins/accounts.ts (Bearer check), modules/{entries,health}/routes.ts, lib/db/ (stores, entry rows)
-supabase/                 # config.toml (local stack), migrations/, seed.sql (local account)
+supabase/                 # config.toml (for the CLI's link / db push), migrations/
 packages/types/           # @sonha/types
 dev/specs | plans | guides | design | research
 ```

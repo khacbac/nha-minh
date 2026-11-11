@@ -7,7 +7,7 @@ const envSchema = z.object({
   LOG_LEVEL: z.enum(["fatal", "error", "warn", "info", "debug", "trace"]).default("info"),
   // Max requests per minute per IP. A family taps a few times a minute at most.
   RATE_LIMIT_MAX: z.coerce.number().int().positive().default(120),
-  // Locally `pnpm db:start` prints both; production: Supabase → Settings → API Keys.
+  // Supabase production, in dev too (dev/guides/backend.md §3): Settings → API Keys.
   SUPABASE_URL: z.string().url(),
   SUPABASE_SECRET_KEY: z.string().min(1),
 });

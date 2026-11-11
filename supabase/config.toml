@@ -1,63 +1,9 @@
-# Local Supabase for Nhà Mình (`pnpm db:start`, dev/guides/backend.md). Ports sit in 563xx so
-# the stack can run next to another local Supabase on the default ports.
+# Supabase CLI settings for Nhà Mình. There is no local stack: the only database is the
+# production project (dev/guides/backend.md). The CLI uses this folder for `link`,
+# `pnpm db:new` and `pnpm db:push` (migrations/ → production).
 project_id = "nha-minh"
 
-[api]
-enabled = true
-port = 56321
-schemas = ["public", "graphql_public"]
-extra_search_path = ["public", "extensions"]
-max_rows = 1000
-
-[db]
-port = 56322
-shadow_port = 56320
-major_version = 17
-
-[db.pooler]
-enabled = false
-port = 56329
-
-[db.migrations]
-enabled = true
-
-[db.seed]
-enabled = true
-sql_paths = ["./seed.sql"]
-
-[realtime]
-enabled = false
-
-[studio]
-enabled = true
-port = 56323
-api_url = "http://127.0.0.1"
-
-[local_smtp]
-enabled = true
-port = 56324
-
-[storage]
-enabled = false
-
-[edge_runtime]
-enabled = false
-
-[analytics]
-enabled = false
-
 [auth]
-enabled = true
-site_url = "http://127.0.0.1:3100"
-jwt_expiry = 3600
-enable_refresh_token_rotation = true
-refresh_token_reuse_interval = 10
-# The family account is made by hand (Studio → Authentication → Add user); the app has no
-# sign-up (spec mvp.md §2.0).
+# The family account is made by hand in the dashboard; the app has no sign-up (spec mvp.md §2.0).
 enable_signup = false
-enable_anonymous_sign_ins = false
 minimum_password_length = 8
-
-[auth.email]
-enable_signup = true
-enable_confirmations = false

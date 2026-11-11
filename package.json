@@ -26,9 +26,6 @@
     "mobile:prebuild": "pnpm --filter @sonha/mobile prebuild",
     "mobile:icons": "node apps/mobile/scripts/build-icons.mjs",
     "server:dev": "pnpm --filter @sonha/server dev",
-    "db:start": "npx supabase@2.122.0 start",
-    "db:stop": "npx supabase@2.122.0 stop",
-    "db:reset": "npx supabase@2.122.0 db reset",
     "db:new": "npx supabase@2.122.0 migration new",
     "db:push": "npx supabase@2.122.0 db push"
   },

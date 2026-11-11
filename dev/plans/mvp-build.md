@@ -29,12 +29,13 @@ How the MVP in `dev/specs/mvp.md` is built, and what is left. Status lives here,
 12. **Metro port:** the Request App dev server often holds 8081 on this machine; run this app's Metro on 8082 and open the dev client with `nhaminh://expo-development-client/?url=http%3A%2F%2Flocalhost%3A8082` after `adb reverse tcp:8082 tcp:8082`.
 13. **iOS:** EAS cloud builds (profile `internal-test`, project `@kbho/nha-minh`) → TestFlight internal group, as Offmute ships; iPhone only (`supportsTablet: false`). Runbook `dev/guides/release-ios.md`.
 14. **Account:** one Supabase user for the whole family (owner's choice 2026-11-11), password sign-in because a code by email would only reach one inbox. The session sits in MMKV (`lib/supabase.ts`); `AuthListener` checks it at launch and the root `Stack.Protected` shows only `sign-in` until there is one. A 401 from the server signs out locally and clears the diary from memory.
-15. **Server shape:** same as Offmute's server (Fastify, error body `{ status, code, message }`, `authenticate` preHandler calling `auth.getUser`, rate limit, Dockerfile from the repo root, Railway). Ports: server 3100, local Supabase 563xx, so both stacks run beside the sister apps. Runbook `dev/guides/backend.md`.
+15. **Server shape:** same as Offmute's server (Fastify, error body `{ status, code, message }`, `authenticate` preHandler calling `auth.getUser`, rate limit, Dockerfile from the repo root, Railway). Server port 3100, beside the sister apps. Runbook `dev/guides/backend.md`.
+17. **One database:** only Supabase production, no local stack or staging (owner's choice 2026-11-11, small project). Local dev = local server (`pnpm server:dev`) + production Supabase, so dev writes go into the real diary. Migrations go straight to production with `pnpm db:push`; only additive changes, or deploy the server first.
 16. **Online only:** no offline queue (owner's choice 2026-11-11). Save and delete wait for the server; failures leave the form / entry as it was with a one-button notice. The form can't be closed while a save is in flight, so a late success never pops the wrong screen.
 
 ## Left / next
 
-- [ ] M3 on the phone: sign in with the seed account against the laptop (`backend.md` §3), Đang tải / Không tải được (Wi-Fi off), pull to refresh, save and delete with and without network, two phones on one account.
+- [ ] M3 on the phone: sign in with the family account through the local server (`backend.md` §3), Đang tải / Không tải được (Wi-Fi off), pull to refresh, save and delete with and without network, two phones on one account.
 - [ ] M3 production: Supabase project + family user (`backend.md` §1), Railway deploy (§2), env for release builds (§4).
 - [ ] Owner run-through on the phone: change month, discard question, income entry, a full month of real use.
 - [ ] iOS: config done 2026-11-11 (EAS project, `eas.json`, scripts); first `pnpm mobile:build:ios:submit` run by the owner in an interactive terminal (Apple login), then TestFlight install and the same phone checks as Android.

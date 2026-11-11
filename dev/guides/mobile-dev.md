@@ -22,7 +22,7 @@ adb shell am start -a android.intent.action.VIEW -d "nhaminh://expo-development-
 
 ## Server và đăng nhập
 
-App cần server và Supabase để đăng nhập và tải sổ: `pnpm db:start`, `pnpm server:dev`, `apps/mobile/.env` theo `apps/mobile/.env.example`. Đầy đủ (cổng cần `adb reverse`, tài khoản thử) ở `backend.md` §3.
+App cần server để tải sổ: `pnpm server:dev` (server local, database là Supabase production), `apps/mobile/.env` theo `apps/mobile/.env.example`. Đầy đủ (cổng cần `adb reverse`) ở `backend.md` §3.
 
 ## Day to day
 
