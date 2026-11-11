@@ -8,6 +8,7 @@ import { Text } from "@/components/text";
 import { FieldFrame } from "@/components/text-field";
 import { useStableSafeAreaInsets } from "@/lib/hooks/use-stable-safe-area-insets";
 import { useT } from "@/lib/i18n";
+import { ALL_ORIENTATIONS } from "@/lib/orientations";
 import { colors, withAlpha } from "@/lib/theme";
 
 import type { EntryForm } from "../_atoms/forms";
@@ -69,6 +70,7 @@ export function WhenFields({ form }: { form: EntryForm }) {
           transparent
           animationType="slide"
           onRequestClose={() => setIosMode(null)}
+          supportedOrientations={ALL_ORIENTATIONS}
         >
           <Pressable
             accessible={false}

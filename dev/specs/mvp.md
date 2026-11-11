@@ -127,6 +127,10 @@ Mã danh mục là cố định vì được lưu trong từng ghi chép: chỉ 
 - Dữ liệu hỏng hoặc không đọc được thì bỏ qua dòng đó, không làm app lỗi.
 - Những gì ghi trên máy trước khi có server (bản thử) không được chuyển lên.
 
+### 3.4 Thiết bị
+
+Điện thoại Android, iPhone và iPad. iPhone và điện thoại chỉ dọc. iPad chạy toàn màn hình, xoay dọc hay ngang đều được (kể cả khi chia đôi màn hình); nội dung căn giữa, rộng tối đa như một trang giấy, hai bên là nền.
+
 ## 4. Ngoài phạm vi MVP
 
 Mỗi người một tài khoản riêng trong cùng một nhà, đăng ký và quên mật khẩu trong app, đăng xuất, ghi khi không có mạng, ngân sách, biểu đồ tròn / đường, nhắc nhở, ảnh đính kèm, tìm kiếm, xuất file, tiếng Anh, giao diện tối.

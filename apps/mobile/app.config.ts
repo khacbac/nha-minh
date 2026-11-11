@@ -35,12 +35,21 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
     backgroundColor: BACKGROUND,
   },
   ios: {
-    // iPhone only: no iPad layout, and TestFlight / App Store then asks for no iPad screenshots.
-    supportsTablet: false,
+    // Native full screen on iPad, as in Unikids (bibo): screens center at max 680 pt
+    // (`ScreenContent`). Without this iPad runs the app in a scaled-up iPhone frame.
+    supportsTablet: true,
     bundleIdentifier: BUNDLE_ID,
     infoPlist: {
       CFBundleDisplayName: APP_NAME,
       ITSAppUsesNonExemptEncryption: false,
+      // iPad turns both ways (App Store requires all four for iPad multitasking); iPhone stays
+      // portrait from `orientation` above.
+      "UISupportedInterfaceOrientations~ipad": [
+        "UIInterfaceOrientationPortrait",
+        "UIInterfaceOrientationPortraitUpsideDown",
+        "UIInterfaceOrientationLandscapeLeft",
+        "UIInterfaceOrientationLandscapeRight",
+      ],
     },
   },
   android: {

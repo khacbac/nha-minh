@@ -27,7 +27,7 @@ How the MVP in `dev/specs/mvp.md` is built, and what is left. Status lives here,
 10. **Keyboard:** the form uses `react-native-keyboard-controller` (`KeyboardProvider` at the root, `KeyboardAvoidingView` + `KeyboardAwareScrollView` in the form), as Request and Offmute do; React Native's own `KeyboardAvoidingView` left Lưu under the number pad on the test phone.
 11. **Dialog:** `ConfirmDialog` is an overlay inside the screen (Reanimated fade, its own BackHandler), not a RN `Modal`: under edge-to-edge the Modal window left the navigation bar undimmed. Render it as the screen's last child.
 12. **Metro port:** the Request App dev server often holds 8081 on this machine; run this app's Metro on 8082 and open the dev client with `nhaminh://expo-development-client/?url=http%3A%2F%2Flocalhost%3A8082` after `adb reverse tcp:8082 tcp:8082`.
-13. **iOS:** EAS cloud builds (profile `internal-test`, project `@kbho/nha-minh`) → TestFlight internal group, as Offmute ships; iPhone only (`supportsTablet: false`). Runbook `dev/guides/release-ios.md`.
+13. **iOS:** EAS cloud builds (profile `internal-test`, project `@kbho/nha-minh`) → TestFlight internal group, as Offmute ships; iPhone and iPad (`supportsTablet: true`, iPad in all four orientations, as in Unikids/bibo; changed 2026-11-11). Runbook `dev/guides/release-ios.md`.
 14. **Account:** one Supabase user for the whole family (owner's choice 2026-11-11), password sign-in because a code by email would only reach one inbox. The session sits in MMKV (`lib/supabase.ts`); `AuthListener` checks it at launch and the root `Stack.Protected` shows only `sign-in` until there is one. A 401 from the server signs out locally and clears the diary from memory.
 15. **Server shape:** same as Offmute's server (Fastify, error body `{ status, code, message }`, `authenticate` preHandler calling `auth.getUser`, rate limit, Dockerfile from the repo root, Railway). Server port 3100, beside the sister apps. Railway service config is code in `.railway/railway.ts` (applied with `railway config apply`), as in Offmute. Runbook `dev/guides/backend.md`.
 17. **One database:** only Supabase production, no local stack or staging (owner's choice 2026-11-11, small project). Local dev = local server (`pnpm server:dev`) + production Supabase, so dev writes go into the real diary. Migrations go straight to production with `pnpm db:push`; only additive changes, or deploy the server first.
@@ -36,7 +36,7 @@ How the MVP in `dev/specs/mvp.md` is built, and what is left. Status lives here,
 ## Left / next
 
 - [ ] M3 on the phone, still to check: Không tải được (Wi-Fi off), save / delete failing without network, two phones on one account.
-- [ ] M3 production: turn off sign-ups in Supabase (`backend.md` §1 step 3); EAS env for iOS (§4); a release build against the Railway server.
+- [ ] M3 production: turn off sign-ups in Supabase (`backend.md` §1 step 3); a release build against the Railway server. (EAS `production` env for iOS set 2026-11-11.)
 - [ ] Owner run-through on the phone: change month, discard question, income entry, a full month of real use.
 - [ ] iOS: config done 2026-11-11 (EAS project, `eas.json`, scripts); first `pnpm mobile:build:ios:submit` run by the owner in an interactive terminal (Apple login), then TestFlight install and the same phone checks as Android.
 - [ ] Ideas in spec §5, in that order (search first).

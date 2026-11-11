@@ -10,7 +10,7 @@
 | Expo project | `@kbho/nha-minh` (`extra.eas.projectId` trong `apps/mobile/app.config.ts`) |
 | Bundle id | `com.bacho.nhaminh`: cố định từ bản upload đầu |
 | Profile | `internal-test` trong `apps/mobile/eas.json`: store build, build number tự tăng trên EAS (`appVersionSource: remote`), Node 24.14.1 + pnpm 10.13.1 |
-| Chỉ iPhone | `supportsTablet: false`: không có layout iPad, App Store không đòi ảnh iPad |
+| iPhone + iPad | `supportsTablet: true`: iPad chạy toàn màn hình (không phải khung iPhone phóng to), xoay dọc và ngang; iPhone chỉ dọc. Nội dung căn giữa, rộng tối đa 680 pt. Lên App Store thì cần thêm ảnh chụp iPad 13" |
 | Mã hoá | `ITSAppUsesNonExemptEncryption: false`: TestFlight không hỏi "Missing Compliance" |
 | Server | Profile dùng EAS environment `production`: phải có `EXPO_PUBLIC_API_URL`, `EXPO_PUBLIC_SUPABASE_URL`, `EXPO_PUBLIC_SUPABASE_ANON_KEY` trước lần build đầu (`backend.md` §4) |
 
