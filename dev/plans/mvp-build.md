@@ -10,7 +10,7 @@ How the MVP in `dev/specs/mvp.md` is built, and what is left. Status lives here,
 | D1 | Every screen and state in `dev/design/index.html` | Done 2026-11-11 |
 | M0 | Scaffold: pnpm + Turbo, Expo SDK 55 dev build, NativeWind, Jotai, i18n (vi), Biome, vitest, AI workflow files | Done 2026-11-11 |
 | M1 | Sổ (month, totals, filter, day list), Chi tiết, Ghi mới / Sửa, Xoá; MMKV storage | Coded 2026-11-11; run on the Android test phone 2026-11-11 (release APK): add with/without amount, title chips, quick amounts, filter chip, detail, edit opens saved values, delete with confirm |
-| M3 | Shared family account (Supabase Auth, email + password) + diary on the server (`apps/server` Fastify, `public.entries`), spec §2.0, §3.3 | Coded 2026-11-11. Server: 13 tests (routes with in-memory stores, row mapping) and run end to end against local Supabase (sign in, save, edit, list, delete, 401, RLS blocks direct reads, Vietnamese round-trip). App: lint, typecheck, 49 tests, Android JS bundle builds. **Not yet run on the phone**; Supabase production project and Railway deploy not made yet |
+| M3 | Shared family account (Supabase Auth, email + password) + diary on the server (`apps/server` Fastify, `public.entries`), spec §2.0, §3.3 | Coded 2026-11-11. Server: 13 tests (routes with in-memory stores, row mapping) and run end to end against local Supabase (sign in, save, edit, list, delete, 401, RLS blocks direct reads, Vietnamese round-trip). App: lint, typecheck, 49 tests, Android JS bundle builds. Migration pushed to production Supabase and the family account made 2026-11-11; run on the Android test phone the same day (dev build, local server, production Supabase): sign in, diary loads, new entry saved, owner checked OK. Railway deploy not made yet |
 | M2 | Name **Nhà Mình** + logo (`assets/brand/logo.svg` → `pnpm mobile:icons`), package `com.bacho.nhaminh`; "Phước thiện"; Thống kê (Tháng / Năm / Tuỳ chọn, spec §2.4) | Coded 2026-11-11; tests for `features/stats/{period,breakdown}.ts`; run on the phone: Tháng, Năm (bars, tap), Tuỳ chọn (date dialog, future days locked). Fixes from that run: month title shrinks on 360dp, tile names shrink ("Phước thiện"), picked month amount moved next to the chart title, moss date dialogs, dialog scrim covers the nav bar, Lưu stays above the number pad (keyboard-controller), no gap under Lưu with the keyboard open, dialog scrim also over the nav bar and Back closes only the dialog; all re-checked on the phone 2026-11-11 14:15 |
 
 ## Decisions while building
@@ -35,8 +35,8 @@ How the MVP in `dev/specs/mvp.md` is built, and what is left. Status lives here,
 
 ## Left / next
 
-- [ ] M3 on the phone: sign in with the family account through the local server (`backend.md` §3), Đang tải / Không tải được (Wi-Fi off), pull to refresh, save and delete with and without network, two phones on one account.
-- [ ] M3 production: Supabase project + family user (`backend.md` §1), Railway deploy (§2), env for release builds (§4).
+- [ ] M3 on the phone, still to check: Không tải được (Wi-Fi off), save / delete failing without network, two phones on one account.
+- [ ] M3 production: turn off sign-ups in Supabase (`backend.md` §1 step 3), Railway deploy (§2), env for release builds and EAS (§4).
 - [ ] Owner run-through on the phone: change month, discard question, income entry, a full month of real use.
 - [ ] iOS: config done 2026-11-11 (EAS project, `eas.json`, scripts); first `pnpm mobile:build:ios:submit` run by the owner in an interactive terminal (Apple login), then TestFlight install and the same phone checks as Android.
 - [ ] Ideas in spec §5, in that order (search first).

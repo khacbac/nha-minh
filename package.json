@@ -27,7 +27,7 @@
     "mobile:icons": "node apps/mobile/scripts/build-icons.mjs",
     "server:dev": "pnpm --filter @sonha/server dev",
     "db:new": "npx supabase@2.122.0 migration new",
-    "db:push": "npx supabase@2.122.0 db push"
+    "db:push": "npx supabase@2.122.0 db push --linked"
   },
   "devDependencies": {
     "@biomejs/biome": "^1.9.4",
