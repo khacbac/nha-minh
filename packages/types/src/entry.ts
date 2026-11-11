@@ -34,7 +34,7 @@ export type MoneyKind = z.infer<typeof moneyKindSchema>;
 /** Largest amount accepted, in đồng: 999 tỷ (spec §2.3). */
 export const MAX_AMOUNT = 999_999_999_999;
 
-/** One diary line (spec §3.2). Times are epoch milliseconds. */
+/** One diary line (spec §3.2). Times are epoch milliseconds. Also the body of `PUT /entries/:id`. */
 export const entrySchema = z.object({
   id: z.string().min(1),
   categoryId: categoryIdSchema,

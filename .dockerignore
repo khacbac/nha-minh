@@ -1,0 +1,12 @@
+# Server image (apps/server/Dockerfile): the host install and builds never go in.
+**/node_modules
+**/dist
+**/.turbo
+**/*.tsbuildinfo
+**/.env
+**/.env.*
+!**/.env.example
+apps/mobile
+dev
+supabase
+.git

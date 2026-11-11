@@ -7,7 +7,19 @@
     "edit": "Sửa",
     "delete": "Xoá",
     "done": "Xong",
-    "tryAgain": "Thử lại"
+    "tryAgain": "Thử lại",
+    "checkNetwork": "Kiểm tra mạng rồi thử lại."
+  },
+  "signIn": {
+    "subtitle": "Đăng nhập tài khoản của nhà mình",
+    "email": "Email",
+    "emailPlaceholder": "ten@email.com",
+    "password": "Mật khẩu",
+    "submit": "Đăng nhập",
+    "busy": "Đang đăng nhập…",
+    "wrong": "Email hoặc mật khẩu chưa đúng.",
+    "offline": "Không kết nối được. Kiểm tra mạng rồi thử lại.",
+    "tooMany": "Thử nhiều lần quá. Đợi một lát rồi thử lại."
   },
   "errors": {
     "unknownTitle": "Có lỗi xảy ra",
@@ -44,7 +56,9 @@
     "emptyTitle": "Chưa có ghi chép nào trong tháng này",
     "emptyBody": "Đi chợ, đóng tiền điện hay một kỷ niệm nhỏ — ghi lại để cả nhà cùng nhớ.",
     "emptyCta": "Ghi việc đầu tiên",
-    "stats": "Thống kê"
+    "stats": "Thống kê",
+    "loading": "Đang tải sổ…",
+    "loadFailedTitle": "Không tải được sổ"
   },
   "entry": {
     "newTitle": "Ghi mới",
@@ -69,6 +83,11 @@
     "stay": "Ở lại",
     "deleteTitle": "Xoá ghi chép này?",
     "deleteMessage": "Không thể hoàn tác.",
+    "deleting": "Đang xoá…",
+    "deleteFailedTitle": "Chưa xoá được",
+    "saving": "Đang lưu…",
+    "saveFailedTitle": "Chưa lưu được",
+    "saveFailedMessage": "Kiểm tra mạng rồi thử lại. Những gì đã nhập vẫn còn.",
     "missing": "Ghi chép này không còn nữa",
     "backToJournal": "Về sổ"
   },

@@ -180,10 +180,24 @@
       return `<div class="section-label">${esc(text)}${optional ? " <small>(không bắt buộc)</small>" : ""}</div>`;
     },
 
-    /** components/confirm-dialog.tsx */
-    dialog({ title, message, confirm, cancel = "Huỷ", danger = false }) {
+    /** components/confirm-dialog.tsx — cancel: null for a one-button notice; busy: confirm waits */
+    dialog({ title, message, confirm, cancel = "Huỷ", danger = false, busy = false }) {
+      const ok = UI.button(confirm, { variant: danger ? "danger" : "primary", disabled: busy });
+      const no = cancel
+        ? UI.button(cancel, { variant: danger ? "primary" : "soft", disabled: busy })
+        : "";
       return `<div class="scrim"><div class="dialog"><div class="t-heading-md">${esc(title)}</div>${message ? `<div class="t-body-lg">${esc(message)}</div>` : ""}
-        <div class="btns">${danger ? `${UI.button(cancel)}${UI.button(confirm, { variant: "danger" })}` : `${UI.button(confirm)}${UI.button(cancel, { variant: "soft" })}`}</div></div></div>`;
+        <div class="btns">${danger ? `${no}${ok}` : `${ok}${no}`}</div></div></div>`;
+    },
+
+    /** components/loading-state.tsx: spinner + a line, centred in the screen */
+    loading(text) {
+      return `<div class="center"><span class="spinner"></span><span class="t-caption">${esc(text)}</span></div>`;
+    },
+
+    /** features/account/components/sign-in-form.tsx: the error line under Đăng nhập */
+    formError(text) {
+      return `<div class="form-error t-caption">${esc(text)}</div>`;
     },
   };
 

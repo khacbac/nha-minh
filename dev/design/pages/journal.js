@@ -44,6 +44,16 @@
         title: "Tháng trống",
         note: "Chưa có gì trong tháng hiện tại: lời mời ghi việc đầu tiên.",
       },
+      {
+        id: "loading",
+        title: "Đang tải",
+        note: "Mở app: sổ tải từ server. Kéo danh sách xuống cũng tải lại, khi đó danh sách cũ vẫn hiện.",
+      },
+      {
+        id: "failed",
+        title: "Không tải được",
+        note: "Lần tải đầu không tới được server: báo và cho thử lại. Không có bản lưu trên máy.",
+      },
     ],
     flow: [
       ["default", 1800],
@@ -52,6 +62,16 @@
       ["empty", 1800],
     ],
     render(s) {
+      if (s.id === "loading") {
+        return `<div class="screen">${UI.monthHeader("Tháng 11, 2026")}${UI.loading("Đang tải sổ…")}</div>`;
+      }
+      if (s.id === "failed") {
+        return `<div class="screen">${UI.monthHeader("Tháng 11, 2026")}
+          <div class="center"><span class="empty-art">${UI.icon("book", 32)}</span>
+          <span class="t-heading-sm">Không tải được sổ</span>
+          <span class="t-caption">Kiểm tra mạng rồi thử lại.</span>
+          <div style="margin-top:8px">${UI.button("Thử lại", { variant: "soft" })}</div></div></div>`;
+      }
       if (s.id === "empty") {
         return `<div class="screen">${UI.monthHeader("Tháng 11, 2026")}${UI.summary({ spent: 0, count: 0 })}
           <div class="center"><span class="empty-art">${UI.icon("book", 32)}</span>

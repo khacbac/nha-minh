@@ -704,3 +704,44 @@
 .brand-board img {
   border-radius: 22%;
 }
+
+/* ---------- components/loading-state.tsx ---------- */
+.spinner {
+  width: 28px;
+  height: 28px;
+  border-radius: 999px;
+  border: 3px solid var(--accent-soft);
+  border-top-color: var(--accent-primary);
+  animation: spin 0.9s linear infinite;
+}
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ---------- app/sign-in.tsx + features/account/components/sign-in-form.tsx ---------- */
+.sign-in {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 12px;
+}
+.sign-in-brand {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 18px;
+  text-align: center;
+}
+.sign-in-brand img {
+  width: 76px;
+  height: 76px;
+  border-radius: 22%;
+}
+.form-error {
+  color: var(--state-danger);
+  text-align: center;
+}

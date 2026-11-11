@@ -26,6 +26,7 @@ dev/design/
     viewer.js, viewer.css # khung kiểu Figma; Design.frame() để page flow dùng lại frame của page khác
   pages/
     flow-main.js          # Flow · Ghi một việc: Sổ → Ghi mới → Lưu → Sổ → Chi tiết → Xoá
+    sign-in.js            # Đăng nhập (tài khoản chung của nhà)
     journal.js            # Sổ (màn chính)
     entry-detail.js       # Chi tiết
     entry-form.js         # Ghi mới / Sửa
@@ -68,4 +69,5 @@ Mỗi state có `note`: một câu nói trạng thái đó là gì, lấy từ s
 | Tên **Nhà Mình**; logo mái nhà ôm trái tim + một dòng nhật ký, nền xanh rêu | "Nhật ký gia đình" quá dài cho tên dưới icon; "Nhà Mình" ngắn, ấm và nói đúng "chuyện của nhà mình". Hình khối đặc, ít chi tiết để vẫn rõ ở cỡ 48px |
 | Thống kê chỉ một màu (xanh rêu): số tổng lớn, thanh ngang theo danh mục, cột theo tháng | Một màu cho độ lớn thì không cần bảng màu phân biệt danh mục; danh mục đã có biểu tượng và tên ngay cạnh thanh. Không biểu đồ tròn: so độ dài thanh dễ hơn so góc |
 | Danh mục cúng / thả cá / đi chùa tên "Phước thiện" | "Tâm linh" nghe nặng nề; "Phước thiện" nhẹ nhàng, bao cả cúng, phóng sinh và việc thiện |
-
+| Đăng nhập là một màn đơn: logo, email, mật khẩu, một nút; lỗi là một dòng chữ dưới nút | Cả nhà chỉ đăng nhập một lần trên mỗi máy; không có đăng ký hay quên mật khẩu nên không cần tab hay link phụ |
+| Lỗi mạng khi lưu / xoá là hộp thông báo một nút "Đóng", dùng lại hộp hỏi xoá | Một kiểu hộp cho cả app; form và ghi chép giữ nguyên phía sau nên người dùng chỉ cần bấm lại |

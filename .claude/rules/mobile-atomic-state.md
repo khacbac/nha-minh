@@ -1,12 +1,12 @@
 # Mobile Atomic State Rules (Jotai)
 
-Mobile follows the **atomic splitting strategy**: many small, focused Jotai atoms instead of monolithic hooks or stores, so re-rendering stays selective. Same principles as the sister apps; Nhà Mình has no server, so "queries" read MMKV and the bundled category catalog instead of an API.
+Mobile follows the **atomic splitting strategy**: many small, focused Jotai atoms instead of monolithic hooks or stores, so re-rendering stays selective. Same principles as the sister apps. The diary comes from apps/server through `lib/api/api-client.ts`; atoms and screens never call `fetch`.
 
 ## Atomic file organization
 
 Feature state lives in `features/<feature>/_atoms/`:
 
-- **queries.ts** — read atoms: persisted state (`atomWithMMKV`, one `new MMKV({ id })` per data group) and derived read-only atoms over it and the category catalog. Data read back from MMKV is checked with the Zod schema from `@sonha/types`.
+- **queries.ts** — read atoms: what the server last sent (held in memory; mutations load and write it) and derived read-only atoms over it and the category catalog. The API client checks every row with the Zod schema from `@sonha/types` and skips a broken one. MMKV holds only the Supabase session (`lib/supabase.ts`).
 - **mutations.ts** — write-only atoms `atom(null, (get, set, arg) => { ... })`. They call the pure rule functions, write persisted atoms, and own the matching `ui.ts` state. They never throw to the component.
 - **ui.ts** — transient state: the month being viewed, the category filter, and computed atoms.
 - **effects.ts** *(optional)* — `jotai-effect` atoms replacing `useEffect` chains, when a feature needs them.

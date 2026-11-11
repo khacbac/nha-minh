@@ -20,6 +20,8 @@
     "no-money": "chores",
     edit: "spiritual",
     discard: "market",
+    saving: "market",
+    "save-failed": "market",
   };
   const TITLE = {
     empty: "",
@@ -28,8 +30,16 @@
     "no-money": "Dọn nhà",
     edit: "Cúng rằm",
     discard: "Đi chợ",
+    saving: "Đi chợ",
+    "save-failed": "Đi chợ",
   };
-  const AMOUNT = { amount: "185.000", edit: "250.000", discard: "185.000" };
+  const AMOUNT = {
+    amount: "185.000",
+    edit: "250.000",
+    discard: "185.000",
+    saving: "185.000",
+    "save-failed": "185.000",
+  };
 
   Design.page({
     id: "entry-form",
@@ -55,6 +65,16 @@
       { id: "no-money", title: "Việc nhà", note: "Danh mục không có tiền: không có ô số tiền." },
       { id: "edit", title: "Sửa", note: "Mở sẵn giá trị đã lưu, tiêu đề form là Sửa ghi chép." },
       { id: "discard", title: "Bỏ thay đổi", note: "Bấm ✕ khi đã nhập gì: hỏi trước khi bỏ." },
+      {
+        id: "saving",
+        title: "Đang lưu",
+        note: "Đã bấm Lưu: chờ server, nút mờ và không bấm lại được.",
+      },
+      {
+        id: "save-failed",
+        title: "Chưa lưu được",
+        note: "Không tới được server: báo một nút Đóng; form giữ nguyên để lưu lại.",
+      },
     ],
     flow: [
       ["empty", 1600],
@@ -82,10 +102,17 @@
               cancel: "Ở lại",
               danger: true,
             })
-          : "";
+          : s.id === "save-failed"
+            ? UI.dialog({
+                title: "Chưa lưu được",
+                message: "Kiểm tra mạng rồi thử lại. Những gì đã nhập vẫn còn.",
+                confirm: "Đóng",
+                cancel: null,
+              })
+            : "";
       return `<div class="screen">${UI.navHeader({ left: "close", title: s.id === "edit" ? "Sửa ghi chép" : "Ghi mới" })}
         <div class="grow">${body}</div>
-        <div class="footer">${UI.button("Lưu", { disabled: !cat })}</div></div>
+        <div class="footer">${UI.button(s.id === "saving" ? "Đang lưu…" : "Lưu", { disabled: !cat || s.id === "saving" })}</div></div>
         ${dialog}`;
     },
   });

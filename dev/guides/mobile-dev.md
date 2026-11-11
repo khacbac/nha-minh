@@ -20,6 +20,10 @@ cd apps/mobile && npx expo start --dev-client --port 8082
 adb shell am start -a android.intent.action.VIEW -d "nhaminh://expo-development-client/?url=http%3A%2F%2Flocalhost%3A8082"
 ```
 
+## Server và đăng nhập
+
+App cần server và Supabase để đăng nhập và tải sổ: `pnpm db:start`, `pnpm server:dev`, `apps/mobile/.env` theo `apps/mobile/.env.example`. Đầy đủ (cổng cần `adb reverse`, tài khoản thử) ở `backend.md` §3.
+
 ## Day to day
 
 ```bash

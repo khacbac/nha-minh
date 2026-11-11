@@ -10,6 +10,8 @@ build/
 .env
 .env.local
 .env.*.local
+# Release-build values for the app (dev/guides/backend.md §4)
+.env.production
 
 # IDE
 .vscode/
@@ -50,3 +52,7 @@ CLAUDE.local.md
 
 # Google Play service account key for `eas submit` (a secret, unlike firebase-config/)
 apps/mobile/google-play-service-account.json
+
+# Supabase CLI local state
+supabase/.branches/
+supabase/.temp/

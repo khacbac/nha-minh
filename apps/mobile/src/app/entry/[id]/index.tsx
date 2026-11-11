@@ -1,6 +1,6 @@
 import { router, useLocalSearchParams } from "expo-router";
 import { useAtomValue, useSetAtom } from "jotai";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { ScrollView, View } from "react-native";
 
 import { Button } from "@/components/button";
@@ -11,8 +11,9 @@ import { NavHeader } from "@/components/nav-header";
 import { ScreenContent } from "@/components/screen-content";
 import { Text } from "@/components/text";
 import { categoryOf } from "@/features/categories/catalog";
-import { deleteEntryAtom } from "@/features/entries/_atoms/mutations";
+import { deleteEntryAtom, dismissDeleteErrorAtom } from "@/features/entries/_atoms/mutations";
 import { entryAtomFamily } from "@/features/entries/_atoms/queries";
+import { deleteStatusAtom } from "@/features/entries/_atoms/ui";
 import { CategoryIcon } from "@/features/entries/components/category-icon";
 import { MissingEntry } from "@/features/entries/components/missing-entry";
 import { dayInfo, now } from "@/features/entries/day";
@@ -27,12 +28,28 @@ export default function EntryDetailScreen() {
   const t = useT();
   const insets = useStableSafeAreaInsets();
   const { id } = useLocalSearchParams<{ id: string }>();
-  const entry = useAtomValue(entryAtomFamily(id));
+  const current = useAtomValue(entryAtomFamily(id));
   const remove = useSetAtom(deleteEntryAtom);
+  const deleteStatus = useAtomValue(deleteStatusAtom);
+  const dismissDeleteError = useSetAtom(dismissDeleteErrorAtom);
   // Pure view state: only this screen shows the delete question.
   const [askDelete, setAskDelete] = useState(false);
+  // The entry as last shown, so the screen doesn't flash "không còn nữa" while it slides away
+  // after its own delete.
+  const shown = useRef(current);
+  if (current) shown.current = current;
+  const [leaving, setLeaving] = useState(false);
+  const entry = current ?? (leaving ? shown.current : null);
 
   if (!entry) return <MissingEntry onBack={() => router.back()} />;
+
+  const confirmDelete = async () => {
+    setLeaving(true);
+    const deleted = await remove(id);
+    setAskDelete(false);
+    if (deleted) router.back();
+    else setLeaving(false);
+  };
 
   const category = categoryOf(entry.categoryId);
   const income = category.money === "income";
@@ -108,15 +125,20 @@ export default function EntryDetailScreen() {
         visible={askDelete}
         title={t("entry.deleteTitle")}
         message={t("entry.deleteMessage")}
-        confirmLabel={t("common.delete")}
+        confirmLabel={deleteStatus === "deleting" ? t("entry.deleting") : t("common.delete")}
         cancelLabel={t("common.cancel")}
         confirmTone="danger"
+        busy={deleteStatus === "deleting"}
         onCancel={() => setAskDelete(false)}
-        onConfirm={() => {
-          setAskDelete(false);
-          router.back();
-          remove(id);
-        }}
+        onConfirm={() => void confirmDelete()}
+      />
+      <ConfirmDialog
+        visible={deleteStatus === "failed"}
+        title={t("entry.deleteFailedTitle")}
+        message={t("common.checkNetwork")}
+        confirmLabel={t("common.close")}
+        onCancel={dismissDeleteError}
+        onConfirm={dismissDeleteError}
       />
     </View>
   );

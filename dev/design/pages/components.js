@@ -53,6 +53,8 @@
           )}</div>`,
         )}
         ${block("FAB", "components/fab.tsx", `<div style="position:relative;width:200px;height:90px">${UI.fab()}</div>`)}
+        ${block("Loading", "components/loading-state.tsx", `<div style="width:240px;height:110px;display:flex">${UI.loading("Đang tải sổ…")}</div>`)}
+        ${block("Form error", "features/account/components/sign-in-form.tsx", `<div style="width:320px">${UI.formError("Email hoặc mật khẩu chưa đúng.")}</div>`)}
       </div>`;
     },
   });

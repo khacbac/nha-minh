@@ -1,6 +1,6 @@
 # Nhà Mình — MVP
 
-Cập nhật: 2026-11-11 (chiều: tên Nhà Mình, Phước thiện, Thống kê)
+Cập nhật: 2026-11-11 (tối: tài khoản chung, lưu trên server)
 
 ## 1. Là gì
 
@@ -12,9 +12,23 @@ Nguyên tắc:
 - **Nhẹ nhàng.** Đây là cuốn sổ gia đình, không phải app tài chính: không cảnh báo đỏ; thống kê chỉ có số tổng, thanh xếp hạng và cột theo tháng (§2.4).
 - **Mở rộng được.** Danh mục, kiểu dữ liệu và màn hình tách riêng để sau này thêm tính năng (xem §5) mà không phải làm lại.
 
-Ngôn ngữ: tiếng Việt. Một máy một cuốn sổ; dữ liệu nằm trên máy, không có tài khoản, không có server (§3.3).
+Ngôn ngữ: tiếng Việt. Cả nhà dùng chung **một tài khoản**, nên mọi máy đăng nhập vào đều thấy cùng một cuốn sổ. Ghi chép nằm trên server, không nằm trên máy: cần mạng để xem và ghi (§3.3).
 
 ## 2. Màn hình
+
+### 2.0 Đăng nhập
+
+Chưa đăng nhập thì app chỉ có màn này.
+
+- Logo, chữ "Nhà Mình", dòng "Đăng nhập tài khoản của nhà mình".
+- Ô **Email** (bàn phím email, không tự viết hoa) và ô **Mật khẩu** (ẩn ký tự). Nút "Đăng nhập" mờ đi cho tới khi email đúng dạng và mật khẩu không trống; trong lúc chờ nút ghi "Đang đăng nhập…" và không bấm lại được.
+- Không có đăng ký và quên mật khẩu trong app: tài khoản của nhà do người quản lý tạo sẵn và gửi email + mật khẩu cho cả nhà.
+- Lỗi hiện dưới nút, giữ nguyên những gì đã nhập:
+  - sai email hoặc mật khẩu: "Email hoặc mật khẩu chưa đúng.";
+  - không có mạng: "Không kết nối được. Kiểm tra mạng rồi thử lại.";
+  - thử quá nhiều lần: "Thử nhiều lần quá. Đợi một lát rồi thử lại.".
+- Đăng nhập xong vào Sổ. Lần sau mở app vào thẳng Sổ, không hỏi lại. Khi server không còn nhận lần đăng nhập này (đổi mật khẩu, tài khoản bị xoá), app quay về màn Đăng nhập.
+- Chưa có nút Đăng xuất (§4).
 
 ### 2.1 Sổ (màn chính)
 
@@ -26,12 +40,14 @@ Ngôn ngữ: tiếng Việt. Một máy một cuốn sổ; dữ liệu nằm tr�
 - Chạm một dòng → Chi tiết (§2.2).
 - Nút nổi "+ Ghi mới" ở góc phải dưới → Ghi mới (§2.3).
 - Tháng chưa có gì: biểu tượng sổ, "Chưa có ghi chép nào trong tháng này", nút "Ghi việc đầu tiên" (chỉ ở tháng hiện tại).
+- Mở app: tải sổ từ server. Trong lúc tải lần đầu chỉ có tên tháng và "Đang tải sổ…" (chưa có thẻ tổng, chip lọc, nút Ghi mới). Không tải được: biểu tượng, "Không tải được sổ", "Kiểm tra mạng rồi thử lại.", nút "Thử lại".
+- Kéo danh sách xuống để tải lại (thấy ngay những gì máy khác vừa ghi). Quay lại app sau khi để ở nền cũng tự tải lại. Tải lại không được thì giữ nguyên danh sách đang thấy.
 
 ### 2.2 Chi tiết ghi chép
 
 - Nút quay lại, nút sửa (bút chì) góc phải.
 - Biểu tượng danh mục lớn, tên danh mục, tiêu đề, số tiền lớn (nếu có), ngày giờ đầy đủ ("Thứ Tư, 11/11/2026 · 08:30"), ghi chú (nếu có) trong một khung.
-- Dưới cùng: nút "Sửa" và nút "Xoá". Xoá hỏi lại: "Xoá ghi chép này?" / "Không thể hoàn tác." / "Xoá" (màu cảnh báo) / "Huỷ". Xoá xong quay về Sổ.
+- Dưới cùng: nút "Sửa" và nút "Xoá". Xoá hỏi lại: "Xoá ghi chép này?" / "Không thể hoàn tác." / "Xoá" (màu cảnh báo) / "Huỷ". Bấm Xoá thì nút ghi "Đang xoá…" và mờ đi cho tới khi server xoá xong, rồi quay về Sổ. Không xoá được: "Chưa xoá được" / "Kiểm tra mạng rồi thử lại." / "Đóng"; ghi chép vẫn còn.
 - Nếu ghi chép không còn (đã xoá ở nơi khác): "Ghi chép này không còn nữa" và nút quay lại.
 
 ### 2.3 Ghi mới / Sửa
@@ -44,7 +60,7 @@ Một form, dùng cho cả ghi mới và sửa (sửa mở sẵn giá trị đã
 4. **Thời gian**: hai ô Ngày và Giờ, mặc định là lúc mở form (ghi mới). Không chọn được ngày sau hôm nay.
 5. **Ghi chú** (không bắt buộc, tối đa 2000 ký tự): ô nhiều dòng.
 
-Nút "Lưu" cố định dưới cùng, mờ đi cho tới khi có danh mục và tiêu đề. Lưu xong: ghi mới quay về Sổ và nhảy về tháng của ghi chép; sửa quay về Chi tiết. Nút ✕ góc trái đóng form; nếu đã nhập gì thì hỏi "Bỏ thay đổi?" / "Bỏ" / "Ở lại".
+Nút "Lưu" cố định dưới cùng, mờ đi cho tới khi có danh mục và tiêu đề. Bấm Lưu thì nút ghi "Đang lưu…" và không bấm lại được cho tới khi server trả lời; trong lúc đó ✕ và nút quay lại không đóng form. Không lưu được: "Chưa lưu được" / "Kiểm tra mạng rồi thử lại. Những gì đã nhập vẫn còn." / "Đóng", form giữ nguyên. Lưu xong: ghi mới quay về Sổ và nhảy về tháng của ghi chép; sửa quay về Chi tiết. Nút ✕ góc trái đóng form; nếu đã nhập gì thì hỏi "Bỏ thay đổi?" / "Bỏ" / "Ở lại".
 
 ### 2.4 Thống kê
 
@@ -93,7 +109,7 @@ Mã danh mục là cố định vì được lưu trong từng ghi chép: chỉ 
 
 | Trường | Bắt buộc | Ghi chú |
 | --- | --- | --- |
-| Mã | có | Sinh trên máy, không đổi |
+| Mã | có | Sinh trên máy lúc ghi mới, không đổi |
 | Danh mục | có | Một mã ở §3.1 |
 | Tiêu đề | có | 1–120 ký tự, bỏ khoảng trắng hai đầu |
 | Ghi chú | không | Tối đa 2000 ký tự; để trống thì không lưu |
@@ -105,12 +121,16 @@ Mã danh mục là cố định vì được lưu trong từng ghi chép: chỉ 
 
 ### 3.3 Lưu trữ
 
-Mọi ghi chép lưu trên máy. Gỡ app là mất dữ liệu (sao lưu là một tính năng sau, §5). Dữ liệu hỏng hoặc không đọc được thì bỏ qua dòng đó, không làm app lỗi.
+- Ghi chép lưu trên server của Nhà Mình, theo tài khoản. Cả nhà đăng nhập cùng một tài khoản nên máy nào cũng thấy cùng một cuốn sổ; tài khoản khác không đọc được.
+- App không giữ bản sao trên máy: mỗi lần mở app tải lại cả sổ. Không có mạng thì không xem, ghi, sửa hay xoá được. Gỡ app hay đổi máy không mất gì; đăng nhập lại là thấy đủ.
+- Hai máy sửa cùng một ghi chép thì lần lưu sau cùng được giữ. Xoá ở máy này thì máy kia thấy mất sau lần tải lại kế tiếp; mở Chi tiết của nó thì báo "Ghi chép này không còn nữa".
+- Dữ liệu hỏng hoặc không đọc được thì bỏ qua dòng đó, không làm app lỗi.
+- Những gì ghi trên máy trước khi có server (bản thử) không được chuyển lên.
 
 ## 4. Ngoài phạm vi MVP
 
-Tài khoản, đồng bộ nhiều máy, chia sẻ sổ giữa các thành viên, ngân sách, biểu đồ tròn / đường, nhắc nhở, ảnh đính kèm, tìm kiếm, xuất file, tiếng Anh, giao diện tối.
+Mỗi người một tài khoản riêng trong cùng một nhà, đăng ký và quên mật khẩu trong app, đăng xuất, ghi khi không có mạng, ngân sách, biểu đồ tròn / đường, nhắc nhở, ảnh đính kèm, tìm kiếm, xuất file, tiếng Anh, giao diện tối.
 
 ## 5. Hướng mở rộng (chưa làm)
 
-Theo thứ tự dự kiến: tìm kiếm; sao lưu/khôi phục ra file; danh mục tự tạo; nhắc lịch âm (rằm, mùng 1, giỗ); ảnh đính kèm; đồng bộ cả nhà qua server.
+Theo thứ tự dự kiến: tìm kiếm; ghi khi mất mạng rồi tự gửi khi có mạng; đăng xuất; danh mục tự tạo; nhắc lịch âm (rằm, mùng 1, giỗ); ảnh đính kèm; mỗi người một tài khoản trong cùng một nhà (biết ai ghi); xuất file.

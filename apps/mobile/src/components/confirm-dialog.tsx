@@ -18,6 +18,8 @@ type Props = {
   cancelLabel?: string;
   confirmLabel: string;
   confirmTone?: "primary" | "danger";
+  // The confirm is waiting on the server: both buttons, the scrim and back do nothing.
+  busy?: boolean;
   // Still required with one button: the hardware back / scrim dismiss.
   onCancel: () => void;
   onConfirm: () => void;
@@ -38,18 +40,20 @@ export function ConfirmDialog({
   cancelLabel,
   confirmLabel,
   confirmTone = "primary",
+  busy = false,
   onCancel,
   onConfirm,
 }: Props) {
+  const cancel = busy ? () => undefined : onCancel;
   // Android back closes the dialog first. Added after the screen's own handler, so it runs first.
   useEffect(() => {
     if (!visible) return;
     const sub = BackHandler.addEventListener("hardwareBackPress", () => {
-      onCancel();
+      if (!busy) onCancel();
       return true;
     });
     return () => sub.remove();
-  }, [visible, onCancel]);
+  }, [visible, busy, onCancel]);
 
   if (!visible) return null;
 
@@ -62,7 +66,7 @@ export function ConfirmDialog({
     >
       <Pressable
         accessible={false}
-        onPress={onCancel}
+        onPress={cancel}
         className="flex-1 items-center justify-center px-6"
         style={{ backgroundColor: SCRIM }}
       >
@@ -82,14 +86,14 @@ export function ConfirmDialog({
           {/* A destructive confirm goes second, under the safe choice (design: entry-detail "Hỏi xoá"). */}
           {confirmTone === "danger" ? (
             <View className="gap-2.5 pt-2">
-              {cancelLabel ? <Button label={cancelLabel} onPress={onCancel} /> : null}
-              <Button label={confirmLabel} onPress={onConfirm} variant="danger" />
+              {cancelLabel ? <Button label={cancelLabel} onPress={cancel} disabled={busy} /> : null}
+              <Button label={confirmLabel} onPress={onConfirm} variant="danger" disabled={busy} />
             </View>
           ) : (
             <View className="gap-2.5 pt-2">
-              <Button label={confirmLabel} onPress={onConfirm} />
+              <Button label={confirmLabel} onPress={onConfirm} disabled={busy} />
               {cancelLabel ? (
-                <Button label={cancelLabel} onPress={onCancel} variant="soft" />
+                <Button label={cancelLabel} onPress={cancel} variant="soft" disabled={busy} />
               ) : null}
             </View>
           )}

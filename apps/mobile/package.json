@@ -22,6 +22,7 @@
     "@expo-google-fonts/be-vietnam-pro": "^0.4.1",
     "@react-native-community/datetimepicker": "8.6.0",
     "@sonha/types": "workspace:*",
+    "@supabase/supabase-js": "^2.119.0",
     "expo": "~55.0.28",
     "expo-constants": "~55.0.17",
     "expo-dev-client": "~55.0.37",

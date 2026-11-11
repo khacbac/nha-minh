@@ -1,34 +1,32 @@
-import { type Entry, entrySchema } from "@sonha/types";
+import type { Entry } from "@sonha/types";
 import { atom } from "jotai";
 import { atomFamily } from "jotai-family";
-import { MMKV } from "react-native-mmkv";
-
-import { createAtomWithMMKV } from "@/lib/jotai/atom-with-mmkv";
 
 import { sortNewestFirst } from "../timeline";
 
-const atomWithMMKV = createAtomWithMMKV(new MMKV({ id: "entries" }));
+/**
+ * The family diary as the server last sent it, by id (spec §3.3). Held in memory only: every
+ * launch loads it again. Written only by the mutations, with rows already checked by the API
+ * client.
+ */
+export const entriesByIdAtom = atom<Record<string, Entry>>({});
 
 /**
- * Every entry on the phone, by id (spec §3.3). Written only by the mutations; read through
- * `entryListAtom` / `entryAtomFamily`, which drop rows that fail the schema.
+ * `loaded` once a load has succeeded; `failed` when the last load did not reach the server.
+ * Sổ shows Đang tải / Không tải được only while nothing has loaded yet (spec §2.1).
  */
-export const entriesByIdAtom = atomWithMMKV<Record<string, unknown>>("by-id", {});
-
-/** Valid entries, newest first. A broken row is skipped, never thrown (spec §3.3). */
-export const entryListAtom = atom((get): Entry[] => {
-  const valid: Entry[] = [];
-  for (const raw of Object.values(get(entriesByIdAtom))) {
-    const parsed = entrySchema.safeParse(raw);
-    if (parsed.success) valid.push(parsed.data);
-  }
-  return sortNewestFirst(valid);
+export const entriesSyncAtom = atom<{ loaded: boolean; loading: boolean; failed: boolean }>({
+  loaded: false,
+  loading: false,
+  failed: false,
 });
+
+/** Newest first. */
+export const entryListAtom = atom((get): Entry[] =>
+  sortNewestFirst(Object.values(get(entriesByIdAtom))),
+);
 
 /** One entry for the detail and edit screens; null once it is deleted (spec §2.2). */
 export const entryAtomFamily = atomFamily((id: string) =>
-  atom((get): Entry | null => {
-    const parsed = entrySchema.safeParse(get(entriesByIdAtom)[id]);
-    return parsed.success ? parsed.data : null;
-  }),
+  atom((get): Entry | null => get(entriesByIdAtom)[id] ?? null),
 );

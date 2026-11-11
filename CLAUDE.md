@@ -4,17 +4,18 @@ Guidance for Claude Code when working in this repository.
 
 ## What this is
 
-Nhà Mình (repo and packages keep the first working name `so-nha` / `@sonha`): a small family diary app. Each entry has a category, a title (filled in from the category), an optional note and, for categories that involve money (đi chợ, hoá đơn, cúng rằm, thả cá…), an optional amount in đồng. The main screen lists a month's entries by day with the month's spending; entries can be viewed, edited and deleted; Thống kê shows totals by month, year or a picked range. Vietnamese only. The spec is `dev/specs/mvp.md`; read it before changing behaviour. No server in the MVP: entries live on the device in MMKV.
+Nhà Mình (repo and packages keep the first working name `so-nha` / `@sonha`): a small family diary app. Each entry has a category, a title (filled in from the category), an optional note and, for categories that involve money (đi chợ, hoá đơn, cúng rằm, thả cá…), an optional amount in đồng. The main screen lists a month's entries by day with the month's spending; entries can be viewed, edited and deleted; Thống kê shows totals by month, year or a picked range. Vietnamese only. The spec is `dev/specs/mvp.md`; read it before changing behaviour. The whole family signs in with **one shared account** (email + password, made by hand in Supabase; no sign-up in the app) and the diary lives on the server: `apps/server` (Fastify) over Supabase Postgres. The app holds the diary in memory only and needs the network to read or write (spec §2.0, §3.3).
 
-Status: **M0** scaffold, **M1** (journal, detail, new/edit form, delete) and **M2** (name + logo, Thống kê) coded 2026-11-11, Android build OK, not yet run on the test phone; plan in `dev/plans/mvp-build.md`. Next ideas are spec §5.
+Status: **M0** scaffold, **M1** (journal, detail, new/edit form, delete), **M2** (name + logo, Thống kê) and **M3** (account + server storage) coded 2026-11-11; plan in `dev/plans/mvp-build.md`. Next ideas are spec §5.
 
 ## Same stack as Request App / Offmute / Bibo
 
 This repo mirrors the sister apps so switching between them needs no context change (local paths in `CLAUDE.local.md`). When unsure how to do something, look at how they do it and match that. Do not introduce a library they do not use without a reason recorded in the spec or the plan.
 
 - **Mobile:** React Native 0.83 + Expo SDK 55, Expo Router, **dev build only**, NativeWind 4, Jotai, form-atoms + Zod, i18next, MMKV, Reanimated, react-native-svg (icons), `@react-native-community/datetimepicker`, expo-haptics, expo-font + `@expo-google-fonts/be-vietnam-pro`, `react-native-keyboard-controller` (the form stays above the keyboard on Android edge-to-edge, same as Request and Offmute)
+- **Backend:** Fastify 5, Zod, Vitest, `@fastify/rate-limit`, Supabase (Auth email + password, Postgres via `@supabase/supabase-js` with the secret key; local stack in `supabase/`); ESM (`"type": "module"`, `.js` import specifiers); deployed on Railway from `apps/server/Dockerfile`
 - **Monorepo:** pnpm 10 + Turbo, Node ≥ 22.13; Biome for lint + format
-- **Shared:** `packages/types` (`@sonha/types`): Zod schemas (`Entry`, `CategoryId`)
+- **Shared:** `packages/types` (`@sonha/types`): Zod schemas (`Entry`, `CategoryId`) and the API contract (`entryListResponseSchema`, `entryResponseSchema`, `API_ERROR_CODES`)
 
 ## Commands
 
@@ -24,27 +25,33 @@ pnpm mobile              # Metro only, for a dev build already on the device
 pnpm mobile:fresh        # Clear Metro/NativeWind caches, then Metro (a new Tailwind class not applying)
 pnpm mobile:android:release  # Release build (JS bundled in, no Metro) installed on the device
 pnpm mobile:build:ios:submit  # EAS cloud build (internal-test) → TestFlight; first run interactive, see dev/guides/release-ios.md
+pnpm db:start            # Local Supabase in Docker (API :56321, Studio :56323); seed account nha@example.com / nhaminh123
+pnpm db:reset            # Re-run supabase/migrations + seed.sql from scratch; pnpm db:new <name> for a new migration
+pnpm server:dev          # apps/server on :3100 (needs apps/server/.env, see .env.example)
 pnpm mobile:icons        # Render assets/brand/logo.svg into the app icon + splash PNGs (headless Chrome)
 pnpm lint                # Biome lint
 pnpm format              # Biome format + organize imports
 pnpm typecheck           # turbo: tsc in every workspace
-pnpm test                # turbo: vitest (pure rules in apps/mobile)
+pnpm test                # turbo: vitest (pure rules in apps/mobile, routes and rows in apps/server)
 pnpm knip                # Unused files/deps (apps/mobile is ignored, as in Request)
 ```
 
-Runbooks: `dev/guides/mobile-dev.md`, `dev/guides/release-ios.md`. Rules: `.claude/rules/coding-standards.md`, `.claude/rules/mobile-atomic-state.md`, `.claude/rules/spec-design-first.md`.
+Runbooks: `dev/guides/mobile-dev.md`, `dev/guides/backend.md` (Supabase, Railway, env for builds), `dev/guides/release-ios.md`. Rules: `.claude/rules/coding-standards.md`, `.claude/rules/mobile-atomic-state.md`, `.claude/rules/spec-design-first.md`.
 
 ## Layout
 
 ```
 apps/mobile/src/
-  app/                    # Expo Router: index (Sổ), entry/new, entry/[id]/index (Chi tiết), entry/[id]/edit, stats
+  app/                    # Expo Router: sign-in, index (Sổ), entry/new, entry/[id]/index (Chi tiết), entry/[id]/edit, stats
   features/<f>/           # _atoms/{queries,mutations,ui,forms}.ts, components/, pure rules + .test.ts
+    account/              # sign-in rules, session atoms, AuthListener, sign-in form
     categories/           # category-data.js (CommonJS, also read by dev/design) + catalog.ts typed view
     entries/              # money, day, timeline, draft rules; entry atoms; journal + form components
     stats/                # period + breakdown rules; stats atoms; period picker, totals, bars
   components/             # shared UI (text, button, chip, fab, icon, text-field, confirm-dialog, nav-header)
-  lib/                    # i18n/, jotai/atom-with-mmkv.ts, theme/{tokens.js,icons.js} (read by dev/design), feedback.ts
+  lib/                    # api/ (http-client, api-client), supabase.ts (session in MMKV), i18n/, theme/{tokens.js,icons.js} (read by dev/design), feedback.ts
+apps/server/src/          # app.ts, config.ts, plugins/accounts.ts (Bearer check), modules/{entries,health}/routes.ts, lib/db/ (stores, entry rows)
+supabase/                 # config.toml (local stack), migrations/, seed.sql (local account)
 packages/types/           # @sonha/types
 dev/specs | plans | guides | design | research
 ```

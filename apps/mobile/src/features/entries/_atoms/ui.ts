@@ -13,6 +13,12 @@ export const viewedMonthAtom = atom(monthKey(now()));
 /** The filter chip; null = Tất cả. Reset when the month changes (spec §2.1). */
 export const categoryFilterAtom = atom<CategoryId | null>(null);
 
+/** Lưu waits for the server; "failed" shows Chưa lưu được (spec §2.3). */
+export const saveStatusAtom = atom<"idle" | "saving" | "failed">("idle");
+
+/** Xoá waits for the server; "failed" shows Chưa xoá được (spec §2.2). */
+export const deleteStatusAtom = atom<"idle" | "deleting" | "failed">("idle");
+
 const monthEntriesAtom = atom((get) => inMonth(get(entryListAtom), get(viewedMonthAtom)));
 
 /** Chips after Tất cả: categories with entries this month, in grid order. */

@@ -5,6 +5,10 @@
     ".": {
       "project": ["dev/*.mjs"]
     },
+    "apps/server": {
+      "project": "src/**/*.ts",
+      "ignoreDependencies": ["pino-pretty"]
+    },
     "packages/types": {
       "project": "src/**/*.ts"
     }

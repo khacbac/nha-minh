@@ -21,6 +21,7 @@
       "node": "24.14.1",
       "pnpm": "10.13.1",
       "distribution": "store",
+      "environment": "production",
       "autoIncrement": true,
       "env": {
         "EAS_BUILD_PROFILE": "internal-test"

@@ -1,12 +1,12 @@
 # Code Quality Laws
 
-These rules apply to all TypeScript in this repo (mobile and packages). Same rules as the sister apps, minus everything about a server or an API: Nhà Mình has neither in the MVP.
+These rules apply to all TypeScript in this repo (mobile, server and packages). Same rules as the sister apps.
 
 ## Type safety
 
 - **No `any` in non-test code.** Use precise types, generics, or `unknown` + narrowing. `any` in a `.test.ts` file is tolerated but discouraged.
 - **No `@ts-ignore`, `@ts-expect-error`, or `biome-ignore` comments** unless narrowly justified with a reason on the same line. Fix the type, don't silence it.
-- **No non-null assertions (`!`) in risky paths** (data read back from MMKV, optional chains, array lookups). Handle the null case or prove it can't happen via types.
+- **No non-null assertions (`!`) in risky paths** (data from the server or MMKV, optional chains, array lookups). Handle the null case or prove it can't happen via types.
 - Explicit parameter and return types on exported functions. Local inference inside function bodies is fine.
 
 ## Comments

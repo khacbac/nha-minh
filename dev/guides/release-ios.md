@@ -12,6 +12,7 @@
 | Profile | `internal-test` trong `apps/mobile/eas.json`: store build, build number tự tăng trên EAS (`appVersionSource: remote`), Node 24.14.1 + pnpm 10.13.1 |
 | Chỉ iPhone | `supportsTablet: false`: không có layout iPad, App Store không đòi ảnh iPad |
 | Mã hoá | `ITSAppUsesNonExemptEncryption: false`: TestFlight không hỏi "Missing Compliance" |
+| Server | Profile dùng EAS environment `production`: phải có `EXPO_PUBLIC_API_URL`, `EXPO_PUBLIC_SUPABASE_URL`, `EXPO_PUBLIC_SUPABASE_ANON_KEY` trước lần build đầu (`backend.md` §4) |
 
 Cần: tài khoản Apple Developer (99 USD/năm) đã kích hoạt, và đăng nhập `eas login` bằng `kbho` (kiểm tra: `pnpm dlx eas-cli@25.3.0 whoami`).
 

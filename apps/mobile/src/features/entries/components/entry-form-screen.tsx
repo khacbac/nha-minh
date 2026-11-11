@@ -1,6 +1,6 @@
 import { router } from "expo-router";
 import { useFieldValue, useFormValues } from "form-atoms";
-import { useSetAtom } from "jotai";
+import { useAtomValue, useSetAtom } from "jotai";
 import { useEffect, useMemo, useState } from "react";
 import { BackHandler, View } from "react-native";
 import {
@@ -19,7 +19,8 @@ import { useStableSafeAreaInsets } from "@/lib/hooks/use-stable-safe-area-insets
 import { useT } from "@/lib/i18n";
 
 import { type EntryForm, createEntryForm } from "../_atoms/forms";
-import { saveEntryAtom } from "../_atoms/mutations";
+import { dismissSaveErrorAtom, saveEntryAtom } from "../_atoms/mutations";
+import { saveStatusAtom } from "../_atoms/ui";
 import { type EntryDraft, isDraftDirty, isDraftReady } from "../draft";
 import { AmountField } from "./amount-field";
 import { CategoryGrid } from "./category-grid";
@@ -46,25 +47,34 @@ export function EntryFormScreen({
   const form = useMemo(() => createEntryForm(initial), []);
   const values = useFormValues(form.form);
   const save = useSetAtom(saveEntryAtom);
+  const saveStatus = useAtomValue(saveStatusAtom);
+  const dismissSaveError = useSetAtom(dismissSaveErrorAtom);
+  const saving = saveStatus === "saving";
   // Pure view state: only this screen shows the discard question.
   const [askDiscard, setAskDiscard] = useState(false);
 
   const dirty = isDraftDirty(values, initial);
   const ready = isDraftReady(values);
 
-  const close = () => (dirty ? setAskDiscard(true) : router.back());
+  // While saving the form stays: closing it then would leave the save landing on another screen.
+  const close = () => {
+    if (saving) return;
+    if (dirty) setAskDiscard(true);
+    else router.back();
+  };
 
   useEffect(() => {
     const sub = BackHandler.addEventListener("hardwareBackPress", () => {
+      if (saving) return true;
       if (!dirty) return false;
       setAskDiscard(true);
       return true;
     });
     return () => sub.remove();
-  }, [dirty]);
+  }, [dirty, saving]);
 
-  const onSave = () => {
-    const saved = save({ draft: values, ...(editingId ? { editingId } : {}) });
+  const onSave = async () => {
+    const saved = await save({ draft: values, ...(editingId ? { editingId } : {}) });
     if (saved) router.back();
   };
 
@@ -106,7 +116,11 @@ export function EntryFormScreen({
             <NoteField form={form} />
           </KeyboardAwareScrollView>
           <View className="border-t border-line px-5 pt-3">
-            <Button label={t("common.save")} disabled={!ready} onPress={onSave} />
+            <Button
+              label={saving ? t("entry.saving") : t("common.save")}
+              disabled={!ready || saving}
+              onPress={() => void onSave()}
+            />
           </View>
         </ScreenContent>
 
@@ -122,6 +136,14 @@ export function EntryFormScreen({
             setAskDiscard(false);
             router.back();
           }}
+        />
+        <ConfirmDialog
+          visible={saveStatus === "failed"}
+          title={t("entry.saveFailedTitle")}
+          message={t("entry.saveFailedMessage")}
+          confirmLabel={t("common.close")}
+          onCancel={dismissSaveError}
+          onConfirm={dismissSaveError}
         />
       </View>
     </KeyboardAvoidingView>
