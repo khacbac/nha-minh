@@ -20,6 +20,9 @@
     "mobile:android:device": "pnpm --filter @sonha/mobile android:device",
     "mobile:android:release": "pnpm --filter @sonha/mobile android:release",
     "mobile:ios": "pnpm --filter @sonha/mobile ios",
+    "mobile:build:ios": "pnpm --filter @sonha/mobile build:ios",
+    "mobile:build:ios:submit": "pnpm --filter @sonha/mobile build:ios:submit",
+    "mobile:submit:ios": "pnpm --filter @sonha/mobile submit:ios",
     "mobile:prebuild": "pnpm --filter @sonha/mobile prebuild",
     "mobile:icons": "node apps/mobile/scripts/build-icons.mjs"
   },

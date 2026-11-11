@@ -13,7 +13,10 @@
     "ios": "cross-env EAS_BUILD_PROFILE=development expo run:ios",
     "prebuild": "cross-env EAS_BUILD_PROFILE=development expo prebuild --clean",
     "typecheck": "tsc --noEmit",
-    "test": "vitest run"
+    "test": "vitest run",
+    "build:ios": "pnpm dlx eas-cli@25.3.0 build --profile internal-test --platform ios",
+    "build:ios:submit": "pnpm dlx eas-cli@25.3.0 build --profile internal-test --platform ios --auto-submit",
+    "submit:ios": "pnpm dlx eas-cli@25.3.0 submit --profile internal-test --platform ios --latest"
   },
   "dependencies": {
     "@expo-google-fonts/be-vietnam-pro": "^0.4.1",

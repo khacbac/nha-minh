@@ -23,6 +23,7 @@ pnpm mobile:android      # Prebuild + build + install the dev build on Android, 
 pnpm mobile              # Metro only, for a dev build already on the device
 pnpm mobile:fresh        # Clear Metro/NativeWind caches, then Metro (a new Tailwind class not applying)
 pnpm mobile:android:release  # Release build (JS bundled in, no Metro) installed on the device
+pnpm mobile:build:ios:submit  # EAS cloud build (internal-test) → TestFlight; first run interactive, see dev/guides/release-ios.md
 pnpm mobile:icons        # Render assets/brand/logo.svg into the app icon + splash PNGs (headless Chrome)
 pnpm lint                # Biome lint
 pnpm format              # Biome format + organize imports
@@ -31,7 +32,7 @@ pnpm test                # turbo: vitest (pure rules in apps/mobile)
 pnpm knip                # Unused files/deps (apps/mobile is ignored, as in Request)
 ```
 
-Runbook: `dev/guides/mobile-dev.md`. Rules: `.claude/rules/coding-standards.md`, `.claude/rules/mobile-atomic-state.md`, `.claude/rules/spec-design-first.md`.
+Runbooks: `dev/guides/mobile-dev.md`, `dev/guides/release-ios.md`. Rules: `.claude/rules/coding-standards.md`, `.claude/rules/mobile-atomic-state.md`, `.claude/rules/spec-design-first.md`.
 
 ## Layout
 

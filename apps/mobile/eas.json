@@ -1,0 +1,45 @@
+{
+  "cli": {
+    "version": ">= 13.0.0",
+    "appVersionSource": "remote"
+  },
+  "build": {
+    "development": {
+      "developmentClient": true,
+      "distribution": "internal",
+      "env": {
+        "EAS_BUILD_PROFILE": "development"
+      },
+      "ios": {
+        "simulator": true
+      },
+      "android": {
+        "buildType": "apk"
+      }
+    },
+    "internal-test": {
+      "node": "24.14.1",
+      "pnpm": "10.13.1",
+      "distribution": "store",
+      "autoIncrement": true,
+      "env": {
+        "EAS_BUILD_PROFILE": "internal-test"
+      },
+      "android": {
+        "buildType": "app-bundle"
+      }
+    },
+    "production": {
+      "extends": "internal-test",
+      "env": {
+        "EAS_BUILD_PROFILE": "production"
+      }
+    }
+  },
+  "submit": {
+    "internal-test": {
+      "ios": {}
+    },
+    "production": {}
+  }
+}

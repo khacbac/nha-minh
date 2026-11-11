@@ -26,9 +26,10 @@ How the MVP in `dev/specs/mvp.md` is built, and what is left. Status lives here,
 10. **Keyboard:** the form uses `react-native-keyboard-controller` (`KeyboardProvider` at the root, `KeyboardAvoidingView` + `KeyboardAwareScrollView` in the form), as Request and Offmute do; React Native's own `KeyboardAvoidingView` left Lưu under the number pad on the test phone.
 11. **Dialog:** `ConfirmDialog` is an overlay inside the screen (Reanimated fade, its own BackHandler), not a RN `Modal`: under edge-to-edge the Modal window left the navigation bar undimmed. Render it as the screen's last child.
 12. **Metro port:** the Request App dev server often holds 8081 on this machine; run this app's Metro on 8082 and open the dev client with `nhaminh://expo-development-client/?url=http%3A%2F%2Flocalhost%3A8082` after `adb reverse tcp:8082 tcp:8082`.
+13. **iOS:** EAS cloud builds (profile `internal-test`, project `@kbho/nha-minh`) → TestFlight internal group, as Offmute ships; iPhone only (`supportsTablet: false`). Runbook `dev/guides/release-ios.md`.
 
 ## Left / next
 
 - [ ] Owner run-through on the phone: change month, discard question, income entry, a full month of real use.
-- [ ] iOS run (needs a Mac).
+- [ ] iOS: config done 2026-11-11 (EAS project, `eas.json`, scripts); first `pnpm mobile:build:ios:submit` run by the owner in an interactive terminal (Apple login), then TestFlight install and the same phone checks as Android.
 - [ ] Ideas in spec §5, in that order (search first).

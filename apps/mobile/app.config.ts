@@ -16,6 +16,12 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   ...config,
   name: APP_NAME,
   slug: "nha-minh",
+  // EAS project @kbho/nha-minh, same Expo account as the sister apps (dev/guides/release-ios.md).
+  owner: "kbho",
+  extra: {
+    ...config.extra,
+    eas: { projectId: "33ae9d90-7586-4191-874e-b3ec7b318601" },
+  },
   version: "0.1.0",
   scheme: "nhaminh",
   orientation: "portrait",
@@ -29,7 +35,8 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
     backgroundColor: BACKGROUND,
   },
   ios: {
-    supportsTablet: true,
+    // iPhone only: no iPad layout, and TestFlight / App Store then asks for no iPad screenshots.
+    supportsTablet: false,
     bundleIdentifier: BUNDLE_ID,
     infoPlist: {
       CFBundleDisplayName: APP_NAME,
