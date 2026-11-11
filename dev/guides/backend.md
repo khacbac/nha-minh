@@ -32,21 +32,30 @@ docker run --rm --env-file apps/server/.env -e PORT=8080 -p 3998:8080 nha-minh-s
 curl localhost:3998/health
 ```
 
-1. railway.com → **New Project → Deploy from GitHub repo** → repo này, nhánh `master`. Railway tạo mỗi package một service: **xoá service `@sonha/mobile`**, giữ `@sonha/server`.
-2. Service server → Settings:
-   - **Root Directory: để trống** (gốc repo). **Builder: Dockerfile**, **Dockerfile Path: `apps/server/Dockerfile`**. Xoá Build/Start Command Railway tự điền.
-   - **Healthcheck Path:** `/health`. Region **Southeast Asia (Singapore)**, 1 replica.
-   - **Watch Paths:** `apps/server/**`, `packages/types/**`, `package.json`, `pnpm-lock.yaml`, `pnpm-workspace.yaml`, `tsconfig.base.json`: đổi app mobile không build lại server.
-3. **Variables:**
-   ```
-   SUPABASE_URL=https://<project-ref>.supabase.co
-   SUPABASE_SECRET_KEY=sb_secret_...
-   ```
-   Điền sẵn ở `apps/server/.env.production` (gitignore) rồi dán cả file vào Raw Editor. Không đặt `PORT` (Railway tự cấp) và `NODE_ENV` (Dockerfile đã đặt `production`).
-4. **Networking → Generate Domain** (`<tên>.up.railway.app`); có tên miền riêng thì thêm Custom Domain.
-5. Kiểm tra: `curl https://<domain>/health` trả `{"status":"ok",…}`; `curl https://<domain>/entries` trả 401 `UNAUTHORIZED`.
+**Đã dựng 2026-11-11:** Railway project **`nha-minh`** (workspace khacbac, cùng tài khoản với Offmute), service **`nha-minh-server`**, region Singapore, 1 replica.
 
-Mỗi lần push lên `master`, Railway tự build lại khi một watch path đổi.
+| Thứ | Giá trị |
+| --- | --- |
+| URL | `https://nha-minh-server-production.up.railway.app` |
+| Nguồn | GitHub `khacbac/nha-minh`, nhánh `master`: **mỗi lần push lên `master` tự build và deploy** nếu đổi một watch path |
+| Watch paths | `apps/server/**`, `packages/types/**`, `package.json`, `pnpm-lock.yaml`, `pnpm-workspace.yaml`, `tsconfig.base.json`, `.railway/**` (đổi app mobile hay docs không build lại server) |
+| Build / kiểm tra | `apps/server/Dockerfile` từ gốc repo; healthcheck `/health` |
+| Variables | `SUPABASE_URL`, `SUPABASE_SECRET_KEY` (giá trị như `apps/server/.env.production`); không đặt `PORT`, `NODE_ENV` |
+
+Cấu hình service (nguồn, build, watch paths, healthcheck, region) nằm trong **`.railway/railway.ts`**. Railway không đọc file này khi deploy; sửa file rồi áp dụng từ gốc repo:
+
+```powershell
+# PowerShell: trên Windows SDK gọi nhầm lệnh `railway` và báo "requires Railway CLI 5.42.1 or newer"
+$env:_ = "$env:APPDATA\npm\node_modules\@railway\cli\bin\railway.exe"
+& $env:_ config plan     # xem trước
+& $env:_ config apply    # áp dụng
+```
+
+Variables không nằm trong file (`variables: { managed: false }`): đổi bằng dashboard hoặc `railway variables --service nha-minh-server --set KEY=value`.
+
+Thử lại sau mỗi deploy: `curl https://nha-minh-server-production.up.railway.app/health` trả `{"status":"ok",…}`, `…/entries` trả 401 `UNAUTHORIZED`. Log: `railway logs --service nha-minh-server`; danh sách deploy: `railway deployment list --service nha-minh-server`.
+
+Dựng lại từ đầu (project khác): `railway init --name <tên>` trong repo, `config apply` như trên, đặt hai variables, `railway domain --service nha-minh-server`.
 
 ## 3. Chạy trên máy (dev)
 
@@ -91,7 +100,7 @@ Biến `EXPO_PUBLIC_*` được nhúng vào JS lúc build. Thiếu `EXPO_PUBLIC_
 
 | Biến | Giá trị production |
 | --- | --- |
-| `EXPO_PUBLIC_API_URL` | `https://<domain server>` (mục 2) |
+| `EXPO_PUBLIC_API_URL` | `https://nha-minh-server-production.up.railway.app` |
 | `EXPO_PUBLIC_SUPABASE_URL` | `https://<project-ref>.supabase.co` |
 | `EXPO_PUBLIC_SUPABASE_ANON_KEY` | publishable key (`sb_publishable_…`) |
 

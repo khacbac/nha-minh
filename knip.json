@@ -3,7 +3,8 @@
   "ignoreWorkspaces": ["apps/mobile"],
   "workspaces": {
     ".": {
-      "project": ["dev/*.mjs"]
+      "project": ["dev/*.mjs", ".railway/*.ts"],
+      "entry": [".railway/railway.ts"]
     },
     "apps/server": {
       "project": "src/**/*.ts",

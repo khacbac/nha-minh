@@ -32,6 +32,7 @@
   "devDependencies": {
     "@biomejs/biome": "^1.9.4",
     "knip": "^5.64.0",
+    "railway": "3.16.0",
     "turbo": "^2.5.3",
     "typescript": "~5.7.3"
   },
